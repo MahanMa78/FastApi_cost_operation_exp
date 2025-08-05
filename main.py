@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI , Path , status , HTTPException
 from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
 
@@ -26,3 +26,10 @@ async def read_items():
     return JSONResponse(content=custom_list)
 
 
+@app.get("/items/{item_id}")
+def read_item(item_id: int ):
+    for item in custom_list:
+        if item["id"] == item_id: 
+            return item
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="object not found")
