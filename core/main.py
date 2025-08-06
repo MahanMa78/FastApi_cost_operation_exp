@@ -55,3 +55,11 @@ def update_item(item_id:int = Path() , description:str = Body(embed=True) , amou
 
 
 
+@app.delete("/items/{item_id}")
+def delete_item(item_id:int):
+    for item in custom_list:
+        if item["id"] == item_id:
+            custom_list.remove(item)
+            return JSONResponse(content={"detail" : "object removed successfully!"} , status_code=status.HTTP_200_OK)
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="object not found")
